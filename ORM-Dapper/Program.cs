@@ -8,18 +8,36 @@ namespace ORM_Dapper
     {
         static void Main(string[] args)
         {
+            #region Configuration Code
             // ---------------------------------------------------------------------------
             // Configuration code
 
             var config = new ConfigurationBuilder()
+                
                 .SetBasePath(Directory.GetCurrentDirectory())
+                
                 .AddJsonFile("appsettings.json")
+                
                 .Build();
-
+            
             string connString = config.GetConnectionString("DefaultConnection");
+            // Console.WriteLine(connString);
 
-            IDbConnection conn = new MySqlConnection(connString);
             // ---------------------------------------------------------------------------
+            #endregion
+
+            IDbConnection connection = new MySqlConnection(connString);
+            
+            DapperDepartmentRepository repo = new DapperDepartmentRepository(connection);
+
+            Console.WriteLine("Hello user, here are the current departments:");
+
+            IEnumerable<Department> departments = repo.GetAllDepartments();
+
+            foreach (var department in departments)
+            {
+                Console.WriteLine($"{department.DepartmentID} {department.Name}");
+            }
         }
     }
 }

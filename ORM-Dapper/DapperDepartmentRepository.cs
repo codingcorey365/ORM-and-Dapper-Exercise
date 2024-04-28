@@ -18,14 +18,13 @@ public class DapperDepartmentRepository : IDepartmentRepository
         return _connection.Query<Department>("SELECT * FROM Departments;");
     }
 
-    public void InsertDepartments(string NewDepartmentName)
-    {
-        throw new NotImplementedException();
-    }
-
     public void InsertDepartment(string newDepartmentName)
     {
-        _connection.Execute("INSERT INTO DEPARTMENTS (Name) VALUES (@departmentName);",
-            new { departmentName = newDepartmentName });
+        _connection.Execute("INSERT INTO DEPARTMENTS (Name) VALUES (@departmentName);", new { departmentName = newDepartmentName });
+    }
+
+    public void UpdateDepartment(int id, string newName)
+    {
+        _connection.Execute("UPDATE departments SET Name = @newName WHERE DepartmentID = @id;", new { newName = newName, id = id });
     }
 }
